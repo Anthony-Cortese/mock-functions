@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-import { getHashedPasswordFromDB } from "./user";
+import { getHashedPasswordFromDB } from "../auth/hashed";
 
 function verifyPassword(hashedPW, password) {
   if (!hashedPW) {

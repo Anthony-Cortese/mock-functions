@@ -1,7 +1,7 @@
-import { getHashedPasswordFromDB } from "../src/user";
-const { authenticateUser } = require("../src/login");
+import { getHashedPasswordFromDB } from "../src/auth/hashed";
+const { authenticateUser } = require("../src/auth/auth");
 
-jest.mock("../src/user");
+jest.mock("../src/auth/hashed");
 
 describe("login.js", () => {
   describe("#authenticateUser", () => {

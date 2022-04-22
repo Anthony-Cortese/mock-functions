@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "jest --watchAll",
+    "test": "jest --watchAll --detectOpenHandles",
     "start": "node server.js"
   },
   "author": "",
