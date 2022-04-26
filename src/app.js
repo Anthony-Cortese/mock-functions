@@ -26,5 +26,17 @@ export default function (database) {
 
     res.send({ productId });
   });
+
+  // app.post("/ingredients", async (req, res) => {
+  //   const { ,  ,  } = req.body;
+  //   if (!product || !location || !company) {
+  //     res.sendStatus(400);
+  //     return;
+  //   }
+  //   const ingredientId = await database.createProduct(product, company, location);
+
+  //   res.send({ productId });
+  // });
+
   return app;
 }

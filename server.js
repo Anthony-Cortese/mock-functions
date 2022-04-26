@@ -1,5 +1,5 @@
-import database from "../src/database.js";
-import makeApp from "../src/app.js";
+const database = require("./src/db/database");
+import makeApp from "./src/app";
 
 const app = makeApp(database);
 
