@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "description": "mock database",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "test": "jest --coverage --detectOpenHandles --forceExit",
-    "start": "node server.js"
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
