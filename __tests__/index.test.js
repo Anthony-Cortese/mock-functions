@@ -15,7 +15,7 @@ describe("mocking knex for my database", () => {
     };
     const mKnex = jest.fn().mockReturnValue(querybuilder);
     Knex.mockReturnValue(mKnex);
-    const { main } = require("../src/db/index");
+    const { main } = require("../db/index");
     main();
     expect(Knex).toBeCalledWith({ client: "pg" });
     expect(mKnex).toBeCalledWith("users");
