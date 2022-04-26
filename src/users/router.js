@@ -15,4 +15,5 @@ export default function (database) {
 
     res.send({ userId });
   });
+  return app;
 }
