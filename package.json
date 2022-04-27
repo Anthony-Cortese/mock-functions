@@ -4,7 +4,7 @@
   "description": "mock database",
   "main": "index.js",
   "scripts": {
-    "test": "jest --coverage --detectOpenHandles --forceExit",
+    "test": "jest --watchAll --detectOpenHandles --forceExit",
     "start": "node index.js"
   },
   "author": "",

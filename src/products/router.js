@@ -1,11 +1,11 @@
-import express from "express";
+const router = require("express");
 
-export default function (database) {
-  const app = express();
+const productsPost = (database) => {
+  const router = express();
 
-  app.use(express.json());
+  router.use(express.json());
 
-  app.post("/products", async (req, res) => {
+  router.post("/products", async (req, res) => {
     const { product, company, location } = req.body;
     if (!product || !location || !company) {
       res.sendStatus(400);
@@ -15,5 +15,7 @@ export default function (database) {
 
     res.send({ productId });
   });
-  return app;
-}
+  return productsPost;
+};
+
+module.exports = router;

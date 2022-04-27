@@ -1,11 +1,10 @@
-import express from "express";
+const router = require("express");
+const usersPost = (database) => {
+  const router = express();
 
-export default function (database) {
-  const app = express();
+  router.use(express.json());
 
-  app.use(express.json());
-
-  app.post("/users", async (req, res) => {
+  router.post("/users", async (req, res) => {
     const { password, username } = req.body;
     if (!password || !username) {
       res.sendStatus(400);
@@ -15,5 +14,7 @@ export default function (database) {
 
     res.send({ userId });
   });
-  return app;
-}
+  return usersPost;
+};
+
+module.exports = router;
