@@ -9,39 +9,39 @@ const connection = pg.createPool({
 });
 
 //USERS
-export async function getUser(username) {
-  const [rows] = await connection.promise().query(
-    `SELECT * 
-    FROM users 
-    WHERE username = ?`,
-    [username]
-  );
+// export async function getUser(username) {
+//   const [rows] = await connection.promise().query(
+//     `SELECT *
+//     FROM users
+//     WHERE username = ?`,
+//     [username]
+//   );
 
-  return rows[0];
-}
+//   return rows[0];
+// }
 
-export async function createUser(username, password) {
-  const { insertId } = await connection.promise().query(
-    `INSERT INTO users (username, password)
-      VALUES(?, ?)`[(username, password)]
-  );
+// export async function createUser(username, password) {
+//   const { insertId } = await connection.promise().query(
+//     `INSERT INTO users (username, password)
+//       VALUES(?, ?)`[(username, password)]
+//   );
 
-  return insertId;
-}
+//   return insertId;
+// }
 
-export async function findUserById(id) {
-  const [rows] = await connection
-    .promise()
-    .query("SELECT * FROM users WHERE id = ?");
-  return rows[0];
-}
+// export async function findUserById(id) {
+//   const [rows] = await connection
+//     .promise()
+//     .query("SELECT * FROM users WHERE id = ?");
+//   return rows[0];
+// }
 
-export async function removeUser(id) {
-  const [deletedUser] = await connection
-    .promise()
-    .query("SELECT * FROM users WHERE id = ?");
-  return `We hate to see you go ${deletedUser.username}`;
-}
+// export async function removeUser(id) {
+//   const [deletedUser] = await connection
+//     .promise()
+//     .query("SELECT * FROM users WHERE id = ?");
+//   return `We hate to see you go ${deletedUser.username}`;
+// }
 
 //PRODUCTS
 export async function getProducts(product) {

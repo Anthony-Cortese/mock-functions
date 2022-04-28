@@ -61,6 +61,16 @@ describe("POST /products", () => {
         expect(response.body.productId).toBe(i);
       }
     });
+  });
+
+  describe("errors, and status codes", () => {
+    test("should respond with a status code of 400", async () => {
+      const bodyData = [{}];
+      for (const body of bodyData) {
+        const response = await request(app).post("/products").send(body);
+        expect(response.statusCode).toBe(400);
+      }
+    });
 
     test("should respond with a 200 status code", async () => {
       const response = await request(app).post("/products").send({
@@ -79,17 +89,9 @@ describe("POST /products", () => {
       });
       expect(response.body.productId).toBeDefined();
     });
+  });
 
-    describe("when the product, company or locations is missing", () => {
-      test("should respond with a status code of 400", async () => {
-        const bodyData = [{}];
-        for (const body of bodyData) {
-          const response = await request(app).post("/products").send(body);
-          expect(response.statusCode).toBe(400);
-        }
-      });
-    });
-
+  describe("updating the product", () => {
     test("should update the product name based on user input", async () => {
       const updateProduct = jest.fn().mockResolvedValue("Healthy Beverage");
       //this was the original product

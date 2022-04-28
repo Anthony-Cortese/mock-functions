@@ -2,8 +2,8 @@ import Knex from "knex";
 
 jest.mock("knex");
 
-describe("mocking knex for my database", () => {
-  test("mocking my users database", () => {
+describe("mocking knex", () => {
+  test("testing my users database", () => {
     const querybuilder = {
       where: jest.fn().mockReturnThis(),
       select: jest.fn().mockReturnThis(),
