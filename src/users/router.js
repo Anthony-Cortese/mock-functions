@@ -1,4 +1,5 @@
 const router = require("express");
+
 const usersPost = (database) => {
   const router = express();
 
