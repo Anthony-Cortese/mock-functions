@@ -25,7 +25,6 @@ describe("mocking knex for my database", () => {
     });
     expect(querybuilder.select).toBeCalledTimes(1);
     expect(querybuilder.from).toBeCalledTimes(1);
-    expect(querybuilder.select).toBeCalledTimes(1);
     expect(querybuilder.first).toBeCalledTimes(1);
     expect(querybuilder.then).toBeCalledTimes(1);
     expect(querybuilder.orderBy).toBeCalledWith("date", "desc");

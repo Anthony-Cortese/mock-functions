@@ -91,23 +91,29 @@ describe("POST /users", () => {
     });
   });
 
-  // test("should remove a user based on their ID", async () => {
+  test("should respond with a 200 status code", async () => {
+    const response = await request(app).post("/users").send({
+      username: "username",
+      password: "password",
+    });
+    expect(response.statusCode).toBe(200);
+  });
 
-  //   const userData = [
-  //     //test more than 1 instance of username and password
-  //     { id: 1, username: "username1", password: "password1" },
-  //     { id: 2, username: "username2", password: "password2" },
-  //     { id: 3, username: "username3", password: "password3" },
-  //   ];
-  //   for (const body of userData) {
+  test("response has userId", async () => {
+    const response = await request(app).post("/users").send({
+      username: "username",
+      password: "password",
+    });
+    expect(response.body.userId).toBeDefined();
+  });
 
-  //   removeUser.mockReset();
-
-  //   const response = await request(app).delete("/users");
-
-  //   expect(removeUser.mock.calls.length).toBe(1);
-
-  //   expect(response.body.userId);
-  //   }
-  // });
+  describe("when the username and password is missing", () => {
+    test("should respond with a status code of 400", async () => {
+      const bodyData = [{ username: "username" }, { password: "password" }, {}];
+      for (const body of bodyData) {
+        const response = await request(app).post("/users").send(body);
+        expect(response.statusCode).toBe(400);
+      }
+    });
+  });
 });

@@ -34,6 +34,7 @@ describe("POST /products", () => {
       for (const body of bodyData) {
         //reset back to original state
         createProduct.mockReset();
+
         await request(app).post("/products").send(body);
         //how many times the createUser function is called
         expect(createProduct.mock.calls.length).toBe(1);
@@ -59,6 +60,34 @@ describe("POST /products", () => {
         });
         expect(response.body.productId).toBe(i);
       }
+    });
+
+    test("should respond with a 200 status code", async () => {
+      const response = await request(app).post("/products").send({
+        product: "Energy Drink",
+        company: "Monster",
+        location: "California",
+      });
+      expect(response.statusCode).toBe(200);
+    });
+
+    test("response has productId", async () => {
+      const response = await request(app).post("/products").send({
+        product: "Energy Drink",
+        company: "Monster",
+        location: "California",
+      });
+      expect(response.body.productId).toBeDefined();
+    });
+
+    describe("when the product, company or locations is missing", () => {
+      test("should respond with a status code of 400", async () => {
+        const bodyData = [{}];
+        for (const body of bodyData) {
+          const response = await request(app).post("/products").send(body);
+          expect(response.statusCode).toBe(400);
+        }
+      });
     });
 
     test("should update the product name based on user input", async () => {

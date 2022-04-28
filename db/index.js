@@ -16,18 +16,3 @@ export function main() {
     .orderBy("date", "desc")
     .toNative();
 }
-
-export function products() {
-  const query = knex("products")
-    .where({
-      title: "product",
-      lang: "eng",
-    })
-    .select()
-    .from()
-    .where()
-    .first()
-    .then()
-    .orderBy("date", "desc")
-    .toNative();
-}

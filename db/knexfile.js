@@ -1,29 +1,21 @@
-const { Client } = require("pg");
-const { success, failure } = require("./hander");
+const sharedConfig = {
+  client: "pg",
+  migrations: { directory: "./migrations" },
+  seeds: { directory: "./seeds" },
+};
 
-export const getUsers = async (event, context) => {
-  const client = new Client({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_DATABASE,
-    password: process.env.DB_PASSWORD,
-    port: process.env.PORT,
-  });
-
-  await client.connect();
-
-  try {
-    const result = await client.query(`SELECT * FROM public.users;`);
-    console.log(result.rows);
-    client.end();
-    return success({
-      message: `${result.rowCount} item(s) returned`,
-      data: result.rows,
-      status: true,
-    });
-  } catch (e) {
-    console.error(e.stack);
-    client.end();
-    return failure({ message: e, status: false });
-  }
+module.exports = {
+  development: {
+    ...sharedConfig,
+    connection: process.env.DEV_DATABASE_URL,
+  },
+  testing: {
+    ...sharedConfig,
+    connection: process.env.TESTING_DATABASE_URL,
+  },
+  production: {
+    ...sharedConfig,
+    connection: process.env.DATABASE_URL,
+    pool: { min: 2, max: 10 },
+  },
 };
