@@ -1,14 +1,14 @@
-import pg from "pg";
+// import pg from "pg";
 
-const connection = pg.createPool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_DATABASE,
-  password: process.env.DB_PASSWORD,
-  port: process.env.PORT,
-});
+// const connection = pg.createPool({
+//   user: process.env.DB_USER,
+//   host: process.env.DB_HOST,
+//   database: process.env.DB_DATABASE,
+//   password: process.env.DB_PASSWORD,
+//   port: process.env.PORT,
+// });
 
-//USERS
+// USERS;
 // export async function getUser(username) {
 //   const [rows] = await connection.promise().query(
 //     `SELECT *
@@ -43,46 +43,46 @@ const connection = pg.createPool({
 //   return `We hate to see you go ${deletedUser.username}`;
 // }
 
-//PRODUCTS
-export async function getProducts(product) {
-  const [rows] = await connection.promise().query(
-    `SELECT * 
-    FROM products 
-    WHERE product = ?`,
-    [product]
-  );
-  return rows[0];
-}
+// PRODUCTS;
+// export async function getProducts(product) {
+//   const [rows] = await connection.promise().query(
+//     `SELECT *
+//     FROM products
+//     WHERE product = ?`,
+//     [product]
+//   );
+//   return rows[0];
+// }
 
-export async function createProduct(product, company, location) {
-  const { insertId } = await connection.promise().query(
-    `INSERT INTO products (product, company, location)
-      VALUES(?, ?, ?)`[(product, company, location)]
-  );
+// export async function createProduct(product, company, location) {
+//   const { insertId } = await connection.promise().query(
+//     `INSERT INTO products (product, company, location)
+//       VALUES(?, ?, ?)`[(product, company, location)]
+//   );
 
-  return insertId;
-}
+//   return insertId;
+// }
 
-export async function updateProduct(product) {
-  const [updatedProduct] = await connection.promise().query(
-    `UPDATE products 
-      SET products
-      WHERE product
-      RETURNING *`[product]
-  );
-  return updatedProduct;
-}
+// export async function updateProduct(product) {
+//   const [updatedProduct] = await connection.promise().query(
+//     `UPDATE products
+//       SET products
+//       WHERE product
+//       RETURNING *`[product]
+//   );
+//   return updatedProduct;
+// }
 
-export async function getProductsById(id) {
-  const [rows] = await connection
-    .promise()
-    .query("SELECT * FROM products WHERE id = ?");
-  return rows[0];
-}
+// export async function getProductsById(id) {
+//   const [rows] = await connection
+//     .promise()
+//     .query("SELECT * FROM products WHERE id = ?");
+//   return rows[0];
+// }
 
-export async function removeProduct(id) {
-  const [deletedProduct] = await connection
-    .promise()
-    .query("SELECT * FROM products WHERE id = ?");
-  return `We hate to see you go ${deletedProduct.product}`;
-}
+// export async function removeProduct(id) {
+//   const [deletedProduct] = await connection
+//     .promise()
+//     .query("SELECT * FROM products WHERE id = ?");
+//   return `We hate to see you go ${deletedProduct.product}`;
+// }

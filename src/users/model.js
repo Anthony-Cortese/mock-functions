@@ -1,12 +1,27 @@
-const req = require("express/lib/request");
 const db = require("../../db/db-config");
 
 const getUser = () => {
-  return db("users").select("id", "username", "password");
+  return Promise().query(db("users").select("id", "username", "password"));
 };
 
 const findUserById = (id) => {
-  return db("users").where("id", id).first();
+  return Promise().query(db("users").where("id", id).first());
+};
+
+const createUser = async (username, password) => {
+  const { insertId } = await Promise().query(
+    `INSERT INTO users (username, password)
+        VALUES(?, ?)`[(username, password)]
+  );
+
+  return insertId;
+};
+
+const removeUser = async (id) => {
+  const [deletedUser] = await Promise().query(
+    db("user").select("*").where("id", id).del("*")
+  );
+  return deletedUser;
 };
 
 // const createUser2 = async (username, password) => {
@@ -20,22 +35,6 @@ const findUserById = (id) => {
 //   //       VALUES(?, ?)`
 //   return userId;
 // };
-
-const createUser = async (username, password) => {
-  const { insertId } = await connection.promise().query(
-    `INSERT INTO users (username, password)
-        VALUES(?, ?)`[(username, password)]
-  );
-
-  return insertId;
-};
-
-const removeUser = async (id) => {
-  const [deletedUser] = await connection
-    .promise()
-    .query("SELECT * FROM users WHERE id = ?");
-  return `We hate to see you go ${deletedUser.username}`;
-};
 
 module.exports = {
   getUser,

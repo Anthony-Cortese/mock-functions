@@ -2,6 +2,8 @@ import request from "supertest";
 import makeRouter from "../src/app";
 import { jest } from "@jest/globals";
 
+jest.mock("../db/db-config");
+
 //keeps track of right call, the right number of times, the correct parameters
 const createUser = jest.fn();
 
