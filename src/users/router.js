@@ -1,6 +1,6 @@
 const router = require("express");
 
-const usersPost = (database) => {
+export default function (database) {
   const router = express();
 
   router.use(express.json());
@@ -15,7 +15,7 @@ const usersPost = (database) => {
 
     res.send({ userId });
   });
-  return usersPost;
-};
+  return router;
+}
 
 module.exports = router;

@@ -1,17 +1,16 @@
 import request from "supertest";
-import makeApp from "../src/app";
+import makeRouter from "../src/app";
 import { jest } from "@jest/globals";
 
 //keeps track of right call, the right number of times, the correct parameters
 const createUser = jest.fn();
-const removeUser = jest.fn();
 
-const app = makeApp({
+const app = makeRouter({
   createUser,
-  removeUser,
 });
 
 describe("POST /users", () => {
+  afterEach(() => jest.resetAllMocks());
   beforeEach(() => {
     //before each test we will reset the state
     createUser.mockReset();
@@ -20,6 +19,13 @@ describe("POST /users", () => {
   });
 
   describe("given a username and password", () => {
+    beforeEach(() => {
+      //before each test we will reset the state
+      createUser.mockReset();
+      //make a promise that the resolved value will begin at 0
+      createUser.mockResolvedValue(0);
+    });
+
     test("should save the username and password to the database", async () => {
       const bodyData = [
         //test more than 1 instance of username and password
@@ -39,7 +45,7 @@ describe("POST /users", () => {
       }
     });
 
-    test("should respond with a json object containg the user id", async () => {
+    test("should respond with a json object containg the user id and that the id is incremented by 1", async () => {
       //loop to increment the ID# by 1
       for (let i = 0; i < 10; i++) {
         //mock reset
@@ -55,6 +61,7 @@ describe("POST /users", () => {
       }
     });
   });
+
   describe("locating a user based on their ID", () => {
     afterEach(() => jest.resetAllMocks());
 
@@ -67,9 +74,33 @@ describe("POST /users", () => {
           { id: 3, username: "natalie", password: "password3" },
         ],
       });
-      const userId = await findUserById(3);
+      //run 3 times
+      const user = await findUserById(3);
+      //we expect it to be called
       expect(findUserById).toHaveBeenCalled();
-      expect(userId.data.length).toEqual(3);
+      //we have a total of 3 ids
+      expect(user.data.length).toEqual(3);
+      // we can find a user based on their id
+      expect(user.data[2].id).toBe(3);
+    });
+  });
+  describe("remove a user from database", () => {
+    afterEach(() => jest.resetAllMocks());
+
+    test("testing remove user, if a user is removed", async () => {
+      const removeUser = jest.fn().mockResolvedValue({
+        data: [
+          //test more than 1 instance of username and password
+          { id: 1, username: "rick", password: "password1" },
+          { id: 3, username: "natalie", password: "password3" },
+        ],
+      });
+      //we expect remove user to be called 3 times
+      const remove = await removeUser(3);
+      //we expect it to have been called
+      expect(removeUser).toHaveBeenCalled();
+      //the length is now 2 users
+      expect(remove.data.length).toEqual(2);
     });
   });
 
@@ -84,9 +115,13 @@ describe("POST /users", () => {
           { id: 3, username: "natalie", password: "password3" },
         ],
       });
+      //getUser is called 3 times
       const findUser = await getUser(3);
+      //expect getUser to have been called
       expect(getUser).toHaveBeenCalled();
+      //findUser equals 3 total users
       expect(findUser.data.length).toEqual(3);
+      //username finds the name that we expect
       expect(findUser.data[2].username).toEqual("natalie");
     });
   });
@@ -104,6 +139,7 @@ describe("POST /users", () => {
       username: "username",
       password: "password",
     });
+    //we expect the users to have a userId
     expect(response.body.userId).toBeDefined();
   });
 
@@ -112,6 +148,7 @@ describe("POST /users", () => {
       const bodyData = [{ username: "username" }, { password: "password" }, {}];
       for (const body of bodyData) {
         const response = await request(app).post("/users").send(body);
+        //status code is 400 because username and password are both missing
         expect(response.statusCode).toBe(400);
       }
     });

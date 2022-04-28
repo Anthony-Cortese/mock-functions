@@ -79,3 +79,10 @@ export async function getProductsById(id) {
     .query("SELECT * FROM products WHERE id = ?");
   return rows[0];
 }
+
+export async function removeProduct(id) {
+  const [deletedProduct] = await connection
+    .promise()
+    .query("SELECT * FROM products WHERE id = ?");
+  return `We hate to see you go ${deletedProduct.product}`;
+}

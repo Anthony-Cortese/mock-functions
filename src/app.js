@@ -26,5 +26,6 @@ export default function (database) {
 
     res.send({ productId });
   });
+
   return app;
 }

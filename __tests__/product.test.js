@@ -45,7 +45,7 @@ describe("POST /products", () => {
       }
     });
 
-    test("should respond with a json object containg the product id", async () => {
+    test("should respond with a json object containg the product id and that the data is incremented by 1", async () => {
       //loop to increment the ID# by 1
       for (let i = 0; i < 10; i++) {
         //mock reset
@@ -115,12 +115,39 @@ describe("POST /products", () => {
           { product: "Jerky", company: "Tillamook", location: "Wisconsin" },
         ],
       });
+      //getProducts is called 3 times
       const findProduct = await getProducts(3);
       expect(getProducts).toHaveBeenCalled();
+      //the length of the data is 3
       expect(findProduct.data.length).toEqual(3);
+      //different indexes to make sure the data equals what we expect
       expect(findProduct.data[2].product).toEqual("Jerky");
       expect(findProduct.data[1].company).toEqual("Cliff Bar");
       expect(findProduct.data[0].location).toEqual("Los Angeles");
+    });
+  });
+
+  describe("remove a product from database", () => {
+    afterEach(() => jest.resetAllMocks());
+
+    test("testing remove product, if a product is removed", async () => {
+      const removeProduct = jest.fn().mockResolvedValue({
+        data: [
+          { id: 2, product: "Granola", company: "Cliff Bar", location: "Utah" },
+          {
+            id: 3,
+            product: "Jerky",
+            company: "Tillamook",
+            location: "Wisconsin",
+          },
+        ],
+      });
+      //run remove product 3 times
+      const remove = await removeProduct(3);
+      //we expect it to have been called
+      expect(removeProduct).toHaveBeenCalled();
+      //the new length is now 2
+      expect(remove.data.length).toEqual(2);
     });
   });
 
@@ -150,8 +177,9 @@ describe("POST /products", () => {
       const products = await getProductsById(3);
       //getProductsById is called
       expect(getProductsById).toHaveBeenCalled();
-      //the amount of total ID's in the data
+      //the id at index 1 will equal 2
       expect(products.data[1].id).toEqual(2);
+      //the amount of total ID's in the data
       expect(products.data.length).toEqual(3);
     });
   });
