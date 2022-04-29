@@ -1,15 +1,6 @@
-const router = require("express").Router();
-const Users = require("./model");
+const router = require("express");
 
-router.get("/", (req, res, next) => {
-  Users.getUser()
-    .then((users) => {
-      res.status(200).json(users);
-    })
-    .catch(next);
-});
-
-router.post("/", async (req, res) => {
+router.post("/users", async (req, res) => {
   const { password, username } = req.body;
   if (!password || !username) {
     res.sendStatus(400);

@@ -1,5 +1,5 @@
 import request from "supertest";
-import makeRouter from "../src/app";
+import makeRouter from "../src/products/router";
 import { jest } from "@jest/globals";
 
 jest.mock("../db/db-config");

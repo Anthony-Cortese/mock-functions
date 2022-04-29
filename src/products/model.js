@@ -7,12 +7,14 @@ export async function getProducts() {
 }
 
 export async function createProduct(product, company, location) {
-  const { insertId } = await Promise().query(
-    `INSERT INTO products (product, company, location)
-        VALUES(?, ?, ?)`[(product, company, location)]
+  const { productId } = await Promise().query(
+    db("products")
+      .insert(product, company, location)
+      .returning("*")
+      .then((rows) => rows[0])
   );
 
-  return insertId;
+  return productId;
 }
 
 export async function updateProduct(id, product) {

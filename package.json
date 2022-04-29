@@ -6,7 +6,7 @@
   "type": "commonjs",
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit",
-    "start": "node index.js"
+    "start": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,7 +15,9 @@
     "bcrypt": "^5.0.1",
     "express": "^4.17.3",
     "knex": "^2.0.0",
-    "pg": "^8.7.3"
+    "nodemon": "^2.0.16",
+    "pg": "^8.7.3",
+    "pg-pool": "^3.5.1"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.16.11",
