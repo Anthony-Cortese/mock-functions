@@ -1,44 +1,38 @@
 const db = require("../../db/db-config");
 
-const getUser = () => {
-  return Promise().query(db("users").select("id", "username", "password"));
-};
+class UsersModel {
+  constructor(id) {
+    this.tableName = "users";
+    this.id = id;
+  }
 
-const findUserById = (id) => {
-  return Promise().query(db("users").where("id", id).first());
-};
+  async getUser(data) {
+    return db(this.tableName)
+      .where({ is_deleted: false, ...data })
+      .orderBy("created_at", "desc");
+  }
 
-const createUser = async (username, password) => {
-  const { insertId } = await Promise().query(
-    `INSERT INTO users (username, password)
-        VALUES(?, ?)`[(username, password)]
-  );
+  async findUserById(id) {
+    return Promise().query(db("users").where("id", id).first());
+  }
 
-  return insertId;
-};
+  async createUser(username, password) {
+    const { insertId } = await Promise().query(
+      db(this.tableName)
+        .insert(Object.assign(data))
+        .returning("*")
+        .then((rows) => rows[0])
+    );
 
-const removeUser = async (id) => {
-  const [deletedUser] = await Promise().query(
-    db("user").select("*").where("id", id).del("*")
-  );
-  return deletedUser;
-};
+    return insertId;
+  }
 
-// const createUser2 = async (username, password) => {
-//   const { userId } = await db("users")
-//     .insert({
-//       username: req.body.username,
-//       password: req.body.password,
-//     })
-//     .then(() => {});
-//   //   `INSERT INTO users (username, password)
-//   //       VALUES(?, ?)`
-//   return userId;
-// };
+  async removeUser(id) {
+    const [deletedUser] = await Promise().query(
+      db("user").select("*").where("id", id).del("*")
+    );
+    return deletedUser;
+  }
+}
 
-module.exports = {
-  getUser,
-  findUserById,
-  createUser,
-  removeUser,
-};
+module.exports = UsersModel;

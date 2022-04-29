@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "mock database",
   "main": "index.js",
+  "type": "commonjs",
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit",
     "start": "node index.js"

@@ -3,11 +3,13 @@ const express = require("express");
 const usersRouter = require("../src/users/router");
 const productsRouter = require("../src/products/router");
 
-const server = express();
+const router = express.Router();
 
-server.use(express.json());
+router.use(express.json());
 
-server.use("/api/users", usersRouter);
-server.use("/api/products", productsRouter);
+router.use("/api/users", usersRouter);
+router.use("/api/products", productsRouter);
 
-module.exports = server;
+module.exports = {
+  router,
+};

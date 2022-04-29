@@ -1,21 +1,25 @@
-const router = require("express");
+const router = require("express").Router();
+const Users = require("./model");
 
-export default function (database) {
-  const router = express();
+router.get("/", (req, res, next) => {
+  Users.getUser()
+    .then((users) => {
+      res.status(200).json(users);
+    })
+    .catch(next);
+});
 
-  router.use(express.json());
+router.post("/", async (req, res) => {
+  const { password, username } = req.body;
+  if (!password || !username) {
+    res.sendStatus(400);
+    return;
+  }
+  const userId = await database.createUser(username, password);
 
-  router.post("/users", async (req, res) => {
-    const { password, username } = req.body;
-    if (!password || !username) {
-      res.sendStatus(400);
-      return;
-    }
-    const userId = await database.createUser(username, password);
+  res.send({ userId });
+});
 
-    res.send({ userId });
-  });
-  return router;
-}
-
-module.exports = router;
+module.exports = {
+  router,
+};
