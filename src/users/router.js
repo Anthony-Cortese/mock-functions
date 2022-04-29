@@ -1,4 +1,4 @@
-const router = require("express");
+const router = require("express").Router();
 
 router.post("/users", async (req, res) => {
   const { password, username } = req.body;

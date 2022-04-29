@@ -1,4 +1,4 @@
-const router = require("express");
+const router = require("express").Router();
 
 router.post("/products", async (req, res) => {
   const { product, company, location } = req.body;
