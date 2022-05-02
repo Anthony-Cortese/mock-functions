@@ -38,3 +38,10 @@ export async function updateUser(user) {
   );
   return updateUser;
 }
+
+export async function findUserById(id) {
+  const [rows] = await connection
+    .promise()
+    .query(`SELECT * FROM products WHERE id`[id]);
+  return rows[0];
+}

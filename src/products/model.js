@@ -38,3 +38,10 @@ export async function updateProduct(product) {
   );
   return updatedProduct;
 }
+
+export async function findProductById(id) {
+  const [rows] = await connection
+    .promise()
+    .query(`SELECT * FROM products WHERE id`[id]);
+  return rows[0];
+}
