@@ -1,36 +1,40 @@
-const db = require("../../db/db-config");
+import pg from "pg";
 
-export async function getProducts() {
-  return Promise().query(
-    db("products").select("product", "location", "company")
+const connection = pg.createPool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_DATABASE,
+  password: process.env.DB_PASSWORD,
+  port: process.env.PORT,
+});
+
+export async function getProducts(product) {
+  const [rows] = await connection.promise().query(
+    `SELECT * 
+        FROM products 
+        WHERE product = ?`,
+    [product]
   );
+
+  return rows[0];
 }
 
 export async function createProduct(product, company, location) {
-  const { productId } = await Promise().query(
-    db("products")
-      .insert(product, company, location)
-      .returning("*")
-      .then((rows) => rows[0])
+  const { insertId } = await connection.promise().query(
+    `INSERT INTO products (product, company, location) 
+        VALUES (?, ?)`,
+    [product, company, location]
   );
 
-  return productId;
+  return insertId;
 }
 
-export async function updateProduct(id, product) {
-  const [updatedProduct] = await Promise().query(
-    db("products").where("id", id).update(product, "*")
+export async function updateProduct(product) {
+  const [updatedProduct] = await connection.promise().query(
+    `UPDATE products 
+        SET products
+            WHERE product = ?
+            RETURNING *`[product]
   );
   return updatedProduct;
-}
-
-export async function getProductsById(id) {
-  return Promise().query(db("products").where("id", id).first());
-}
-
-export async function removeProduct(id) {
-  const [deletedProduct] = await Promise().query(
-    db("products").select("*").where("id", id).del("*")
-  );
-  return deletedProduct;
 }

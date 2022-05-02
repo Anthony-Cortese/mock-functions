@@ -1,16 +1,19 @@
-const router = require("express").Router();
+import express from "express";
 
-router.post("/users", async (req, res) => {
-  const { password, username } = req.body;
-  if (!password || !username) {
-    res.sendStatus(400);
-    return;
-  }
-  const userId = await database.createUser(username, password);
+export default function (database) {
+  const app = express();
 
-  res.send({ userId });
-});
+  app.use(express.json());
 
-module.exports = {
-  router,
-};
+  app.post("/users", async (req, res) => {
+    const { password, username } = req.body;
+    if (!password || !username) {
+      res.sendStatus(400);
+      return;
+    }
+    const userId = await database.createUser(username, password);
+
+    res.send({ userId });
+  });
+  return app;
+}

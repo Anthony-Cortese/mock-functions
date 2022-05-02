@@ -1,16 +1,18 @@
-const router = require("express").Router();
+import express from "express";
 
-router.post("/products", async (req, res) => {
-  const { product, company, location } = req.body;
-  if (!product || !location || !company) {
-    res.sendStatus(400);
-    return;
-  }
-  const productId = await database.createProduct(product, company, location);
+export default function (database) {
+  const app = express();
 
-  res.send({ productId });
-});
+  app.post("/products", async (req, res) => {
+    const { product, company, location } = req.body;
+    if (!product || !location || !company) {
+      res.sendStatus(400);
+      return;
+    }
+    const productId = await database.createProduct(product, company, location);
 
-module.exports = {
-  router,
-};
+    res.send({ productId });
+  });
+
+  return app;
+}

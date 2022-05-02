@@ -1,5 +1,5 @@
 import request from "supertest";
-import makeApp from "../src/app";
+import makeApp from "../src/app.js";
 import { jest } from "@jest/globals";
 
 //keeps track of right call, the right number of times, the correct parameters
@@ -11,7 +11,7 @@ const app = makeApp({
   getProducts,
 });
 
-describe("POST /products", () => {
+describe("creating new products", () => {
   beforeEach(() => {
     //before each test we will reset the state
     createProduct.mockReset();

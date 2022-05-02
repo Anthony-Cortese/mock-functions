@@ -1,17 +1,15 @@
 import request from "supertest";
-import makeRouter from "../src/products/router";
+import makeApp from "../src/app.js";
 import { jest } from "@jest/globals";
-
-jest.mock("../db/db-config");
 
 //keeps track of right call, the right number of times, the correct parameters
 const createUser = jest.fn();
 
-const app = makeRouter({
+const app = makeApp({
   createUser,
 });
 
-describe("POST /users", () => {
+describe("creating a new user", () => {
   afterEach(() => jest.resetAllMocks());
   beforeEach(() => {
     //before each test we will reset the state
@@ -64,10 +62,10 @@ describe("POST /users", () => {
     });
   });
 
-  describe("locating a user based on their ID", () => {
+  describe("user ID", () => {
     afterEach(() => jest.resetAllMocks());
 
-    test("find all users based on their ID", async () => {
+    test("it should locate a user by id", async () => {
       const findUserById = jest.fn().mockResolvedValue({
         data: [
           //test more than 1 instance of username and password

@@ -1,34 +1,40 @@
-const db = require("../../db/db-config");
+import pg from "pg";
 
-const getUser = () => {
-  return db("users").select("id", "username", "password");
-};
+const connection = pg.createPool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_DATABASE,
+  password: process.env.DB_PASSWORD,
+  port: process.env.PORT,
+});
 
-async function findUserById(id) {
-  return Promise().query(db("users").where("id", id).first());
+export async function getUser(username) {
+  const [rows] = await connection.promise().query(
+    `SELECT * 
+      FROM users 
+      WHERE username = ?`,
+    [username]
+  );
+
+  return rows[0];
 }
 
-async function createUser(username, password) {
-  const { insertId } = await Promise().query(
-    db("users")
-      .insert(username, password)
-      .returning("*")
-      .then((rows) => rows[0])
+export async function createUser(username, password) {
+  const { insertId } = await connection.promise().query(
+    `INSERT INTO users (username, password) 
+      VALUES (?, ?)`,
+    [username, password]
   );
 
   return insertId;
 }
 
-async function removeUser(id) {
-  const [deletedUser] = await Promise().query(
-    db("user").select("*").where("id", id).del("*")
+export async function updateUser(user) {
+  const [updateUser] = await connection.promise().query(
+    `UPDATE users 
+        SET user
+            WHERE user = ?
+            RETURNING *`[user]
   );
-  return deletedUser;
+  return updateUser;
 }
-
-module.exports = {
-  getUser,
-  removeUser,
-  createUser,
-  findUserById,
-};
