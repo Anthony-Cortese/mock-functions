@@ -47,6 +47,26 @@ app.get("/products/1", (req, res, next) => {
   });
 });
 
+app.post("/products", (req, res, next) => {
+  pool.connect(function (err, client, done) {
+    if (err) {
+      console.log("Can not connect to the DB" + err);
+    }
+    client.query(
+      `INSERT INTO users (product, company, location) 
+    VALUES ('product', 'company' 'location')`,
+      function (err, result) {
+        done();
+        if (err) {
+          console.log(err);
+          res.status(400).send(err);
+        }
+        res.status(200).send(result.rows);
+      }
+    );
+  });
+});
+
 app.get("/users", (req, res, next) => {
   pool.connect(function (err, client, done) {
     if (err) {
@@ -70,6 +90,26 @@ app.get("/users/1", (req, res, next) => {
     }
     client.query(
       "SELECT * FROM users WHERE id=1 LIMIT 3",
+      function (err, result) {
+        done();
+        if (err) {
+          console.log(err);
+          res.status(400).send(err);
+        }
+        res.status(200).send(result.rows);
+      }
+    );
+  });
+});
+
+app.post("/users", (req, res, next) => {
+  pool.connect(function (err, client, done) {
+    if (err) {
+      console.log("Can not connect to the DB" + err);
+    }
+    client.query(
+      `INSERT INTO users (username, password) 
+      VALUES ('username', 'password')`,
       function (err, result) {
         done();
         if (err) {

@@ -32,9 +32,8 @@ export async function createProduct(product, company, location) {
 export async function updateProduct(product) {
   const [updatedProduct] = await connection.promise().query(
     `UPDATE products 
-        SET products
-            WHERE product = ?
-            RETURNING *`[product]
+        SET product = 'cheese'
+            WHERE id = ?`[product]
   );
   return updatedProduct;
 }

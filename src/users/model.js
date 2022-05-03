@@ -32,9 +32,8 @@ export async function createUser(username, password) {
 export async function updateUser(user) {
   const [updateUser] = await connection.promise().query(
     `UPDATE users 
-        SET user
-            WHERE user = ?
-            RETURNING *`[user]
+        SET username = 'New Name'
+            WHERE id = ?`[user]
   );
   return updateUser;
 }
