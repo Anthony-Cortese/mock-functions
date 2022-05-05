@@ -10,10 +10,9 @@ const connection = pg.createPool({
 
 export async function getUser(username) {
   const [rows] = await connection.promise().query(
-    `SELECT * 
-      FROM users 
-      WHERE username = ?`,
-    [username]
+    `SELECT *
+      FROM users
+      WHERE username = ${username}`
   );
 
   return rows[0];
@@ -21,9 +20,8 @@ export async function getUser(username) {
 
 export async function createUser(username, password) {
   const { insertId } = await connection.promise().query(
-    `INSERT INTO users (username, password) 
-      VALUES (?, ?)`,
-    [username, password]
+    `INSERT INTO users (username, password)
+      VALUES (${username}, ${password})`
   );
 
   return insertId;
@@ -31,9 +29,9 @@ export async function createUser(username, password) {
 
 export async function updateUser(user) {
   const [updateUser] = await connection.promise().query(
-    `UPDATE users 
+    `UPDATE users
         SET username = 'New Name'
-            WHERE id = ?`[user]
+            WHERE id = ${user}`
   );
   return updateUser;
 }
@@ -41,6 +39,6 @@ export async function updateUser(user) {
 export async function findUserById(id) {
   const [rows] = await connection
     .promise()
-    .query(`SELECT * FROM products WHERE id`[id]);
+    .query(`SELECT * FROM products WHERE ${id}`);
   return rows[0];
 }

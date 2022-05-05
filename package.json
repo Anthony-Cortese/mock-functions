@@ -17,11 +17,16 @@
     "knex": "^2.0.0",
     "nodemon": "^2.0.16",
     "pg": "^8.7.3",
-    "pg-pool": "^3.5.1"
+    "pg-pool": "^3.5.1",
+    "slonik": "^28.1.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.16.11",
+    "@types/supertest": "^2.0.12",
+    "chai": "*",
     "jest": "^27.5.1",
+    "mocha": "*",
+    "sinon": "^13.0.2",
     "supertest": "^6.2.2"
   }
 }

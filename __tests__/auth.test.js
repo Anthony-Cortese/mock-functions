@@ -1,5 +1,8 @@
 import { getHashedPasswordFromDB } from "../src/auth/hashed";
 const { authenticateUser } = require("../src/auth/auth");
+import chai from "chai";
+
+const expect = chai.expect;
 
 jest.mock("../src/auth/hashed");
 
@@ -13,7 +16,7 @@ describe("login.js", () => {
         );
 
         return authenticateUser().catch((error) => {
-          expect(error).toBe(expectedError);
+          expect(error).to.equal(expectedError);
         });
       });
     });

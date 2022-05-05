@@ -1,14 +1,17 @@
 import request from "supertest";
 import makeApp from "../src/app.js";
 import { jest } from "@jest/globals";
+import chai from "chai";
+
+const expect = chai.expect;
+
+jest.mock("../db/db-config.js");
 
 //keeps track of right call, the right number of times, the correct parameters
 const createProduct = jest.fn();
-const getProducts = jest.fn();
 
 const app = makeApp({
   createProduct,
-  getProducts,
 });
 
 describe("creating new products", () => {
@@ -37,11 +40,11 @@ describe("creating new products", () => {
 
         await request(app).post("/products").send(body);
         //how many times the createUser function is called
-        expect(createProduct.mock.calls.length).toBe(1);
+        expect(createProduct.mock.calls).to.have.lengthOf(1);
         //correct product and location and company combination is passed
-        expect(createProduct.mock.calls[0][0]).toBe(body.product);
-        expect(createProduct.mock.calls[0][1]).toBe(body.company);
-        expect(createProduct.mock.calls[0][2]).toBe(body.location);
+        expect(createProduct.mock.calls[0][0]).to.equal(body.product);
+        expect(createProduct.mock.calls[0][1]).to.equal(body.company);
+        expect(createProduct.mock.calls[0][2]).to.equal(body.location);
       }
     });
 
@@ -58,7 +61,7 @@ describe("creating new products", () => {
           company: "Monster",
           location: "California",
         });
-        expect(response.body.productId).toBe(i);
+        expect(response.body.productId).to.equal(i);
       }
     });
   });
@@ -68,7 +71,7 @@ describe("creating new products", () => {
       const bodyData = [{}];
       for (const body of bodyData) {
         const response = await request(app).post("/products").send(body);
-        expect(response.statusCode).toBe(400);
+        expect(response.statusCode).to.equal(400);
       }
     });
 
@@ -78,16 +81,7 @@ describe("creating new products", () => {
         company: "Monster",
         location: "California",
       });
-      expect(response.statusCode).toBe(200);
-    });
-
-    test("response has productId", async () => {
-      const response = await request(app).post("/products").send({
-        product: "Energy Drink",
-        company: "Monster",
-        location: "California",
-      });
-      expect(response.body.productId).toBeDefined();
+      expect(response.statusCode).to.equal(200);
     });
   });
 
@@ -100,7 +94,7 @@ describe("creating new products", () => {
       });
       //this is expected to be the mocked value
       const products = await updateProduct(1);
-      expect(products).toEqual("Healthy Beverage");
+      expect(products).to.equal("Healthy Beverage");
     });
   });
 
@@ -119,13 +113,12 @@ describe("creating new products", () => {
       });
       //getProducts is called 3 times
       const findProduct = await getProducts(3);
-      expect(getProducts).toHaveBeenCalled();
       //the length of the data is 3
-      expect(findProduct.data.length).toEqual(3);
+      expect(findProduct.data.length).to.equal(3);
       //different indexes to make sure the data equals what we expect
-      expect(findProduct.data[2].product).toEqual("Jerky");
-      expect(findProduct.data[1].company).toEqual("Cliff Bar");
-      expect(findProduct.data[0].location).toEqual("Los Angeles");
+      expect(findProduct.data[2].product).to.equal("Jerky");
+      expect(findProduct.data[1].company).to.equal("Cliff Bar");
+      expect(findProduct.data[0].location).to.equal("Los Angeles");
     });
   });
 
@@ -147,9 +140,8 @@ describe("creating new products", () => {
       //run remove product 3 times
       const remove = await removeProduct(3);
       //we expect it to have been called
-      expect(removeProduct).toHaveBeenCalled();
       //the new length is now 2
-      expect(remove.data.length).toEqual(2);
+      expect(remove.data.length).to.equal(2);
     });
   });
 
@@ -178,11 +170,10 @@ describe("creating new products", () => {
       //await so getProductsById is called 3 times
       const products = await getProductsById(3);
       //getProductsById is called
-      expect(getProductsById).toHaveBeenCalled();
       //the id at index 1 will equal 2
-      expect(products.data[1].id).toEqual(2);
+      expect(products.data[1].id).to.equal(2);
       //the amount of total ID's in the data
-      expect(products.data.length).toEqual(3);
+      expect(products.data.length).to.equal(3);
     });
   });
 });

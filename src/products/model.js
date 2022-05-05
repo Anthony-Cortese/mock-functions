@@ -10,10 +10,9 @@ const connection = pg.createPool({
 
 export async function getProducts(product) {
   const [rows] = await connection.promise().query(
-    `SELECT * 
-        FROM products 
-        WHERE product = ?`,
-    [product]
+    `SELECT *
+        FROM products
+        WHERE product = ${product}`
   );
 
   return rows[0];
@@ -21,19 +20,19 @@ export async function getProducts(product) {
 
 export async function createProduct(product, company, location) {
   const { insertId } = await connection.promise().query(
-    `INSERT INTO products (product, company, location) 
-        VALUES (?, ?)`,
-    [product, company, location]
+    `INSERT INTO products (product, company, location)
+        VALUES (${product}, ${company}, ${location})`
   );
 
   return insertId;
 }
 
-export async function updateProduct(product) {
+export async function updateProduct(product, location) {
   const [updatedProduct] = await connection.promise().query(
-    `UPDATE products 
-        SET product = 'cheese'
-            WHERE id = ?`[product]
+    `UPDATE products
+        SET product = ${product}
+            WHERE location = ${location}
+            `
   );
   return updatedProduct;
 }
@@ -41,6 +40,6 @@ export async function updateProduct(product) {
 export async function findProductById(id) {
   const [rows] = await connection
     .promise()
-    .query(`SELECT * FROM products WHERE id`[id]);
+    .query(`SELECT * FROM products WHERE ${id}`);
   return rows[0];
 }
